@@ -1,0 +1,6 @@
+framework module Pods_ScioSDKSampleApp {
+  umbrella header "Pods-ScioSDKSampleApp-umbrella.h"
+
+  export *
+  module * { export * }
+}

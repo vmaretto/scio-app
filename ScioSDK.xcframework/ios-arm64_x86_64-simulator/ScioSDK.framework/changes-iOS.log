@@ -1,0 +1,80 @@
+SCiO Mobile SDK iOS.
+V2.8
+- Fixed crash when disconnecting device.
+
+V2.7
+- Added support "device self test".
+
+V2.6
+- Added support for new build system.
+- Changed the data type of CPScioResultParameter.value from NSString to double.
+- Removed redundant call to isCalibrationValid in the Sample app.
+
+V2.4
+- Added support "use scan limit".
+
+V2.3
+- Added device power saver.
+- Added support keep the calibration data stored per device.
+
+V2.2
+- UIWebView Adjustments.
+
+V2.1
+- Fixed for modelPackageVersion.
+
+V2.0
+- Support enterprise scan and analysis flow.
+
+V1.99:
+- APIs crashes bug fixes
+
+V1.98:
+- Bug fixes (handled crashes when connecting a faulty SCiO device or sending API without token).
+
+V1.97:
+- Bug fixes (handled crash when browsing SCiO devices with short names).
+
+V1.96:
+1. Last WR is saved and can be used for future scans (after re-run)
+2. Added success block on SCiO Device connection
+3. SCiO Devices list is updated on browsing, when SCiO device is no longer available
+
+V1.95:
+1. Bug fix- crashes on offline.
+
+V1.94:
+1. Added "enableLogs" new property. When activated, prints logs to console window.
+
+V1.93:
+1. Added modelID property to CPScioModel result object.
+2. CPScioModel Confidence property is -1 for an invalid result.
+
+V1.92:
+1. Added a new API to get ConsumerPhysics models.
+
+V1.91:
+1. Added a new API to change the SCiO name
+2. Added a new API to retrieve the SCiO battery status
+3. Added a new function to get the SCiO name
+4. Removed "SCiO" prefix from SCiO device name
+5. New sample app.
+
+V1.80:
+1. SCiO login screen modifications
+2. Added SCiO login method with completion
+
+V1.70:
+1. Added confidence for classification results.
+2. CPScioReading (contains scans for analyzing) can be saved for future uses.
+
+V1.61:
+1. Added logout button
+
+V1.60:
+1. Added new API for multiple model analysis.
+2. Added model type (Classification/Estimation).
+3. Fixed unit attribute in analysis results.
+
+V1.51:
+1. Fix Support for Simulator.

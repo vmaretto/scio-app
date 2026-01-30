@@ -1,0 +1,6 @@
+framework module ScioSDK {
+  umbrella header "ScioSDK.h"
+
+  export *
+  module * { export * }
+}

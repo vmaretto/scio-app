@@ -1,0 +1,28 @@
+PODS:
+  - CocoaLumberjack (3.9.0):
+    - CocoaLumberjack/Core (= 3.9.0)
+  - CocoaLumberjack/Core (3.9.0)
+  - LogglyLogger-CocoaLumberjack (3.0.0):
+    - CocoaLumberjack (~> 3.0)
+    - LogglyLogger-CocoaLumberjack/Formatter (= 3.0.0)
+    - LogglyLogger-CocoaLumberjack/Logger (= 3.0.0)
+  - LogglyLogger-CocoaLumberjack/Formatter (3.0.0):
+    - CocoaLumberjack (~> 3.0)
+  - LogglyLogger-CocoaLumberjack/Logger (3.0.0):
+    - CocoaLumberjack (~> 3.0)
+
+DEPENDENCIES:
+  - LogglyLogger-CocoaLumberjack
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - CocoaLumberjack
+    - LogglyLogger-CocoaLumberjack
+
+SPEC CHECKSUMS:
+  CocoaLumberjack: 5644158777912b7de7469fa881f8a3f259c2512a
+  LogglyLogger-CocoaLumberjack: 16afad0a63fb70179fda1db85e03aeb3ded7fb02
+
+PODFILE CHECKSUM: f98f1cc4fe92f0bcbbc2169dd3c1824f2962298f
+
+COCOAPODS: 1.16.2
