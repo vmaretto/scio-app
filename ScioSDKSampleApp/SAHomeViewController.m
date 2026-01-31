@@ -5,6 +5,8 @@
 //  Created by Daniel David on 06/06/2016.
 //  Copyright © 2016 ConsumerPhysics. All rights reserved.
 //
+//  Modified: Added MiniOrto integration
+//
 
 #import "SAHomeViewController.h"
 #import <ScioSDK/ScioSDK.h>
@@ -444,6 +446,8 @@ NSString *const SALastCalibrationFileName = @"SALastCalibrationFileName";
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf alertWithTitle:@"Results" message:message];
+                // Send to MiniOrto
+                [weakSelf sendToMiniOrto:model];
             });
         }
         else
@@ -453,6 +457,68 @@ NSString *const SALastCalibrationFileName = @"SALastCalibrationFileName";
             });
         }
     }];
+}
+
+#pragma mark - MiniOrto Integration
+
+- (void)sendToMiniOrto:(CPScioModel *)model {
+    NSLog(@"Sending to MiniOrto: %@", model.name);
+    
+    // Build payload
+    NSMutableDictionary *payload = [NSMutableDictionary dictionary];
+    payload[@"modelName"] = model.name ?: @"Unknown";
+    payload[@"modelType"] = model.modelType == CPScioModelTypeClassification ? @"classification" : @"estimation";
+    payload[@"source"] = @"scio-ios-app";
+    payload[@"timestamp"] = @([[NSDate date] timeIntervalSince1970] * 1000);
+    
+    if (model.attributeValue && ![model.attributeValue isKindOfClass:[NSNull class]]) {
+        if (model.attributeType == CPScioModelAttributeTypeNumeric) {
+            payload[@"value"] = @([model.attributeValue doubleValue]);
+        } else {
+            payload[@"value"] = model.attributeValue;
+        }
+    }
+    
+    if (model.aggregatedValue && ![model.aggregatedValue isKindOfClass:[NSNull class]]) {
+        payload[@"aggregatedValue"] = model.aggregatedValue;
+    }
+    
+    if (model.confidence > 0) {
+        payload[@"confidence"] = @(model.confidence);
+    }
+    
+    payload[@"lowConfidence"] = @(model.lowConfidence);
+    
+    // Send to MiniOrto
+    NSURL *url = [NSURL URLWithString:@"https://mini-orto.vercel.app/api/receive-scio"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    request.HTTPMethod = @"POST";
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSError *jsonError;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:payload options:0 error:&jsonError];
+    
+    if (jsonError) {
+        NSLog(@"MiniOrto JSON error: %@", jsonError);
+        return;
+    }
+    
+    request.HTTPBody = jsonData;
+    
+    NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (error) {
+                NSLog(@"MiniOrto send error: %@", error);
+            } else {
+                NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+                NSLog(@"MiniOrto response: %ld", (long)httpResponse.statusCode);
+                if (data) {
+                    NSString *responseStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                    NSLog(@"MiniOrto data: %@", responseStr);
+                }
+            }
+        }];
+    [task resume];
 }
 
 - (void)UseScanLimit {
